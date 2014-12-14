@@ -59,14 +59,14 @@ class Kohonen(object):
 
             if (roznica < winner[0] or winner[0] < 0) and (not self.forced or self.lista_wag[i][0] in ['NONE', name] ):
                 winner = [roznica, i]
-            # elif (len(sasiedztwo) < 2 or roznica < sasiedztwo[1]):
-            #     try:
-            #         del sasiedztwo[1]
-            #     except:
-            #         pass
-            #     finally:
-            #         sasiedztwo.append([roznica, i])
-            #         sasiedztwo.sort()
+            elif (len(sasiedztwo) < 2 or roznica < sasiedztwo[1]):
+                try:
+                    del sasiedztwo[1]
+                except:
+                    pass
+                finally:
+                    sasiedztwo.append([roznica, i])
+                    sasiedztwo.sort()
 
 
         return self.lista_wag[winner[1]], winner[1], sasiedztwo
@@ -89,8 +89,9 @@ class Trening(Kohonen):
 
         for licz in range(petla):   #####dobrac alpha i warunek konca uczenia
             for i, x in enumerate(self.tlist[1:]):
-                self.tlist[i+1] = str(float(x) + (self.alfa)*(float(self.vector[i])-float(x)))
+                self.tlist[i+1] = str(float(x) + (self.alfa/(licz+1))*(float(self.vector[i])-float(x)))
                 
+                #wykona sie jesli sasiedztwo nie jest pusta lista
                 for s in sasiedztwo:
                     self.lista_wag[s[1]][i+1] = str(float(x) + (self.alfa/(licz+1))*(1/(licz+1))*(float(self.vector[i])-float(x)))
 
@@ -198,6 +199,6 @@ if __name__ == '__main__':
         poprawne = 0
 
     else:
-        print 'nie wybralespoprawnej opcji'    
+        print 'nie wybrales poprawnej opcji'    
         #print len(pix)
         #print pix[15000]
